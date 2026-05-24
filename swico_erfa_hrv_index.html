@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWICO ERFA – HRV Reflexion</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f3;
+    --bg3: #eeede9;
+    --text: #1a1a18;
+    --text2: #6b6b66;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius: 10px;
+    --radius-lg: 14px;
+    --accent: #1a1a18;
+    --green: #4CAF50;
+    --yellow-green: #8BC34A;
+    --amber: #FFC107;
+    --orange: #FF7043;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg2: #252523;
+      --bg3: #2e2e2b;
+      --text: #e8e6df;
+      --text2: #9c9a92;
+      --border: rgba(255,255,255,0.10);
+      --border2: rgba(255,255,255,0.20);
+      --accent: #e8e6df;
+    }
+  }
+
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 560px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text2);
+    border: 0.5px solid var(--border2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: .7rem;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: .5rem;
+  }
+
+  .sub {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity .15s;
+    font-family: inherit;
+  }
+  .btn-primary:hover { opacity: .85; }
+  .btn-primary:disabled { opacity: .3; cursor: default; }
+
+  .btn-secondary {
+    flex: 1;
+    border: 0.5px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    border-radius: var(--radius);
+    padding: 11px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+  .btn-secondary:hover { background: var(--bg2); }
+
+  .nav-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .btn-next {
+    flex: 2;
+    border: none;
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: var(--radius);
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity .15s;
+  }
+  .btn-next:disabled { opacity: .3; cursor: default; }
+  .btn-next:not(:disabled):hover { opacity: .85; }
+
+  /* Progress */
+  .progress {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 1.2rem;
+  }
+  .pdot {
+    height: 3px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background .3s;
+  }
+  .pdot.done { background: var(--accent); }
+
+  /* Question card */
+  .q-card {
+    background: var(--bg2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .q-num {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: .4rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .q-txt {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .q-ctx {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: .6rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Options */
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    background: var(--bg);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color .15s, background .15s;
+    font-family: inherit;
+    line-height: 1.4;
+  }
+  .opt:hover { border-color: var(--border2); background: var(--bg2); }
+  .opt.sel { border-color: var(--accent); background: var(--bg2); border-width: 1.5px; }
+  .dot {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .opt.sel .dot { border-color: var(--accent); }
+  .opt.sel .dot::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: block;
+  }
+
+  /* Result */
+  .bar-wrap {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: .6rem 0 .3rem;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1.2s ease;
+    width: 0%;
+  }
+  .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 1rem;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 1rem 0;
+  }
+  .stat {
+    background: var(--bg2);
+    border-radius: var(--radius);
+    padding: .85rem .6rem;
+    text-align: center;
+  }
+  .stat .n {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .stat .l {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .insight {
+    border-left: 2px solid var(--border2);
+    padding: .75rem 1rem;
+    margin: 1rem 0;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+  .insight strong { color: var(--text); font-weight: 500; }
+
+  .discuss {
+    background: var(--bg2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+  .discuss h3 {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: .6rem;
+  }
+  .discuss p {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .duo-note {
+    font-size: 13px;
+    color: var(--text2);
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+
+  .restart-btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 11px;
+    font-size: 14px;
+    color: var(--text2);
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: .75rem;
+    transition: background .15s;
+  }
+  .restart-btn:hover { background: var(--bg2); }
+
+  /* Branding footer */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border);
+    letter-spacing: .04em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Screen 0: Start -->
+  <div id="s0" class="screen active">
+    <div class="tag">ERFA-Tagung · SWICO Branchenlösung</div>
+    <h1>Eine Person in eurem Umfeld war kürzlich «nicht mehr sie selbst».</h1>
+    <p class="sub">Ihr habt es vielleicht gespürt – aber wann genau habt ihr es <em>wirklich bemerkt</em>?<br><br>90-Sekunden-Reflexion mit eurem Nachbarn.</p>
+    <button class="btn-primary" onclick="go(1)">Gemeinsam reflektieren →</button>
+    <p class="duo-note">Sucht euch jetzt eine Person neben euch.<br>Ihr beantwortet die Fragen gemeinsam.</p>
+    <div class="footer">SWICO · Human Control Room · HRV-Monitoring</div>
+  </div>
+
+  <!-- Screen 1: Questions -->
+  <div id="s1" class="screen">
+    <div class="progress" id="prog"></div>
+    <div class="q-card">
+      <div class="q-num" id="qnum"></div>
+      <div class="q-txt" id="qtxt"></div>
+      <div class="q-ctx" id="qctx"></div>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="back()">← Zurück</button>
+      <button class="btn-next" id="nxt" onclick="next()" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- Screen 2: Result -->
+  <div id="s2" class="screen">
+    <div class="tag">Euer gemeinsames Bild</div>
+    <h2 id="res-title"></h2>
+    <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
+    <div class="bar-labels"><span>Früh erkannt</span><span>Spät erkannt</span></div>
+    <div class="stat-row" id="stats"></div>
+    <div class="insight" id="insight"></div>
+    <div class="discuss">
+      <h3>Tauscht euch 60 Sekunden aus:</h3>
+      <p id="dq"></p>
+    </div>
+    <button class="restart-btn" onclick="go(0)">↺ Nochmals starten</button>
+    <div class="footer">SWICO · Human Control Room · HRV-Monitoring</div>
+  </div>
+
+</div>
+
+<script>
+const qs = [
+  {
+    txt: "An welchem Punkt habt ihr gemerkt, dass jemand im Team «nicht mehr funktioniert»?",
+    ctx: "Denkt an eine konkrete Situation – aus eurer Rolle als HR, Führungskraft oder Vertrauensperson.",
+    opts: [
+      "Sehr früh – wir haben Veränderungen schnell bemerkt",
+      "Mittel – es brauchte einige Wochen",
+      "Spät – erst als die Leistung klar nachliess",
+      "Sehr spät – erst bei einer Krise oder Ausfall"
+    ],
+    w: [0, 1, 2, 3]
+  },
+  {
+    txt: "Was war das erste Zeichen, das euch aufgefallen ist?",
+    ctx: "Wählt das, was am ehesten zutrifft – auch wenn mehreres passt.",
+    opts: [
+      "Verändertes Kommunikationsverhalten (stiller, gereizter)",
+      "Veränderte Fehlerquote oder Arbeitsqualität",
+      "Häufigere Abwesenheiten oder Krankheitstage",
+      "Die Person hat es selbst angesprochen"
+    ],
+    w: [0, 1, 2, 1]
+  },
+  {
+    txt: "Wie sicher wart ihr, ob ihr handeln solltet?",
+    ctx: "Das Gefühl zwischen «ich bilde mir das ein» und «ich muss jetzt etwas tun».",
+    opts: [
+      "Sehr sicher – klares Bild, klarer Handlungsbedarf",
+      "Eher sicher – mit leichten Zweifeln",
+      "Unsicher – wir haben gezögert",
+      "Sehr unsicher – wir haben gewartet, ob es sich von selbst löst"
+    ],
+    w: [0, 1, 2, 3]
+  },
+  {
+    txt: "Was hat euch im Erkennen oder Handeln gebremst?",
+    ctx: "Ehrlich antworten – das ist der eigentliche Punkt dieser Frage.",
+    opts: [
+      "Nichts wesentliches – wir hatten klare Prozesse",
+      "Fehlende Sprache / Begriffe für das, was wir sahen",
+      "Unsicherheit, ob wir «überreagieren»",
+      "Kein objektiver Massstab – alles war Bauchgefühl"
+    ],
+    w: [0, 1, 2, 3]
+  }
+];
+
+let cur = 0, answers = [], sel = null;
+
+function buildProg() {
+  document.getElementById('prog').innerHTML =
+    qs.map((_, i) => `<div class="pdot${i < cur ? ' done' : ''}"></div>`).join('');
+}
+
+function showQ() {
+  sel = answers[cur] !== undefined ? answers[cur] : null;
+  document.getElementById('nxt').disabled = sel === null;
+  document.getElementById('qnum').textContent = `Frage ${cur + 1} von ${qs.length}`;
+  document.getElementById('qtxt').textContent = qs[cur].txt;
+  document.getElementById('qctx').textContent = qs[cur].ctx;
+  document.getElementById('opts').innerHTML = qs[cur].opts.map((t, i) =>
+    `<button class="opt${sel === i ? ' sel' : ''}" onclick="pick(${i})">
+      <span class="dot"></span>${t}
+    </button>`
+  ).join('');
+  buildProg();
+}
+
+function pick(i) {
+  sel = i;
+  document.querySelectorAll('.opt').forEach((b, j) => b.classList.toggle('sel', j === i));
+  document.getElementById('nxt').disabled = false;
+}
+
+function go(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+  window.scrollTo(0, 0);
+  if (n === 1) { cur = 0; answers = []; showQ(); }
+  if (n === 2) showResult();
+}
+
+function back() { cur > 0 ? (cur--, showQ()) : go(0); }
+
+function next() {
+  if (sel === null) return;
+  answers[cur] = sel;
+  cur < qs.length - 1 ? (cur++, showQ()) : go(2);
+}
+
+function showResult() {
+  const score = answers.reduce((s, a, i) => s + qs[i].w[a], 0);
+  const pct = Math.round(score / 12 * 100);
+  const lvl = score <= 3 ? 0 : score <= 6 ? 1 : score <= 9 ? 2 : 3;
+
+  const colors = ['#4CAF50', '#8BC34A', '#FFC107', '#FF7043'];
+  const bar = document.getElementById('bar');
+  bar.style.background = colors[lvl];
+  setTimeout(() => bar.style.width = pct + '%', 100);
+
+  const titles = [
+    'Gutes Früherkennungs-System',
+    'Ausbaufähige Frühwarnung',
+    'Bauchgefühl ohne Struktur',
+    'Reaktiv statt präventiv'
+  ];
+  document.getElementById('res-title').textContent = titles[lvl];
+
+  const earlySign = ['Verhalten', 'Leistung', 'Abwesenheit', 'Selbstmeldung'][answers[1]];
+  const certainty = ['Sicher', 'Eher sicher', 'Unsicher', 'Sehr unsicher'][answers[2]];
+  const blocker = ['Keine', 'Sprache fehlte', 'Überreaktion-Angst', 'Kein Massstab'][answers[3]];
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="n">${earlySign}</div><div class="l">Erstes Signal</div></div>
+    <div class="stat"><div class="n">${certainty}</div><div class="l">Handlungs­sicherheit</div></div>
+    <div class="stat"><div class="n">${blocker}</div><div class="l">Grösste Hürde</div></div>
+  `;
+
+  const insights = [
+    '<strong>Euer Profil:</strong> Ihr habt Strukturen und ein gutes Gespür. Die Frage ist: Wie macht ihr dieses Wissen im Team <strong>skalierbar</strong> – unabhängig von einzelnen Personen?',
+    '<strong>Euer Profil:</strong> Das Gespür ist da, aber die Erkennung hängt von Aufmerksamkeit ab. Was wäre ein <strong>einfacher, systematischer Anker</strong> – neben dem Bauchgefühl?',
+    '<strong>Euer Profil:</strong> Typisches Muster in ICT-Firmen: Viel läuft über informelle Wahrnehmung. Das ist menschlich – aber auch fragil. <strong>Objektive Indikatoren</strong> würden euch hier entlasten.',
+    '<strong>Euer Profil:</strong> Reaktiv zu sein ist kein Versagen – es zeigt, dass ihr handelt wenn nötig. Aber: Bis zur Krise gehen wertvolle Ressourcen verloren. <strong>Frühwarnung kostet wenig, Burnout kostet viel.</strong>'
+  ];
+  document.getElementById('insight').innerHTML = insights[lvl];
+
+  const dqs = [
+    'Welche konkreten Strukturen oder Rituale habt ihr eingeführt, die frühe Erkennung ermöglichen? Was könnten andere Firmen davon übernehmen?',
+    'Was wäre in eurer Organisation ein einfacher, realistischer erster Schritt zu mehr Systematik – ohne grossen Aufwand?',
+    'Welche Sprache fehlt euch, um das Thema im Führungsalltag anzusprechen, ohne dass es sofort als «Schwäche» interpretiert wird?',
+    'Was bräuchtet ihr – als HR, als Führungskraft, als Vertrauensperson – damit ihr früher handeln könntet? Was steht dem entgegen?'
+  ];
+  document.getElementById('dq').textContent = dqs[lvl];
+}
+</script>
+</body>
+</html>
