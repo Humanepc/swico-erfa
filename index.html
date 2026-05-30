@@ -10,7 +10,6 @@
   :root {
     --bg: #ffffff;
     --bg2: #f5f5f3;
-    --bg3: #eeede9;
     --text: #1a1a18;
     --text2: #6b6b66;
     --border: rgba(0,0,0,0.12);
@@ -28,7 +27,6 @@
     :root {
       --bg: #1c1c1a;
       --bg2: #252523;
-      --bg3: #2e2e2b;
       --text: #e8e6df;
       --text2: #9c9a92;
       --border: rgba(255,255,255,0.10);
@@ -60,7 +58,6 @@
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* Tag */
   .tag {
     display: inline-block;
     font-size: 11px;
@@ -73,20 +70,12 @@
     margin-bottom: 1.2rem;
   }
 
-  /* Headings */
   h1 {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 500;
     color: var(--text);
     line-height: 1.3;
     margin-bottom: .7rem;
-  }
-  h2 {
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: .5rem;
   }
 
   .sub {
@@ -96,7 +85,6 @@
     margin-bottom: 2rem;
   }
 
-  /* Buttons */
   .btn-primary {
     width: 100%;
     background: var(--accent);
@@ -127,11 +115,8 @@
   }
   .btn-secondary:hover { background: var(--bg2); }
 
-  .nav-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 1rem;
-  }
+  .nav-row { display: flex; gap: 8px; margin-top: 1rem; }
+
   .btn-next {
     flex: 2;
     border: none;
@@ -148,22 +133,22 @@
   .btn-next:disabled { opacity: .3; cursor: default; }
   .btn-next:not(:disabled):hover { opacity: .85; }
 
-  /* Progress */
-  .progress {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 1.2rem;
-  }
-  .pdot {
-    height: 3px;
-    flex: 1;
-    border-radius: 2px;
-    background: var(--border);
-    transition: background .3s;
-  }
+  .progress { display: flex; gap: 5px; margin-bottom: 1.2rem; }
+  .pdot { height: 3px; flex: 1; border-radius: 2px; background: var(--border); transition: background .3s; }
   .pdot.done { background: var(--accent); }
 
-  /* Question card */
+  .law-badge {
+    display: inline-block;
+    font-size: 10px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: var(--text2);
+    margin-bottom: .5rem;
+    letter-spacing: .04em;
+  }
+
   .q-card {
     background: var(--bg2);
     border-radius: var(--radius-lg);
@@ -171,7 +156,7 @@
     margin-bottom: 1rem;
   }
   .q-num {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text2);
     margin-bottom: .4rem;
     text-transform: uppercase;
@@ -191,7 +176,6 @@
     line-height: 1.5;
   }
 
-  /* Options */
   .opts { display: grid; gap: 8px; }
   .opt {
     background: var(--bg);
@@ -203,80 +187,36 @@
     cursor: pointer;
     text-align: left;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     transition: border-color .15s, background .15s;
     font-family: inherit;
     line-height: 1.4;
   }
-  .opt:hover { border-color: var(--border2); background: var(--bg2); }
-  .opt.sel { border-color: var(--accent); background: var(--bg2); border-width: 1.5px; }
+  .opt:hover { background: var(--bg2); }
+  .opt.sel { border-color: var(--accent); border-width: 1.5px; background: var(--bg2); }
   .dot {
-    width: 17px;
-    height: 17px;
+    width: 17px; height: 17px;
     border-radius: 50%;
     border: 1.5px solid var(--border2);
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
   }
   .opt.sel .dot { border-color: var(--accent); }
   .opt.sel .dot::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    display: block;
+    content: ''; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--accent); display: block;
   }
 
-  /* Result */
-  .bar-wrap {
-    height: 10px;
-    background: var(--border);
-    border-radius: 5px;
-    overflow: hidden;
-    margin: .6rem 0 .3rem;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 5px;
-    transition: width 1.2s ease;
-    width: 0%;
-  }
-  .bar-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--text2);
-    margin-bottom: 1rem;
-  }
+  .bar-wrap { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; margin: .6rem 0 .3rem; }
+  .bar-fill { height: 100%; border-radius: 5px; transition: width 1.2s ease; width: 0%; }
+  .bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 1rem; }
 
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin: 1rem 0;
-  }
-  .stat {
-    background: var(--bg2);
-    border-radius: var(--radius);
-    padding: .85rem .6rem;
-    text-align: center;
-  }
-  .stat .n {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.2;
-  }
-  .stat .l {
-    font-size: 11px;
-    color: var(--text2);
-    margin-top: 4px;
-    line-height: 1.3;
-  }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 1rem 0; }
+  .stat { background: var(--bg2); border-radius: var(--radius); padding: .85rem .6rem; text-align: center; }
+  .stat .n { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .stat .l { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.3; }
 
   .insight {
     border-left: 2px solid var(--border2);
@@ -302,23 +242,10 @@
     letter-spacing: .07em;
     margin-bottom: .6rem;
   }
-  .discuss p {
-    font-size: 15px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  .duo-note {
-    font-size: 13px;
-    color: var(--text2);
-    text-align: center;
-    margin-top: 1rem;
-    line-height: 1.6;
-  }
+  .discuss p { font-size: 15px; color: var(--text); line-height: 1.6; }
 
   .restart-btn {
-    display: block;
-    width: 100%;
+    display: block; width: 100%;
     background: transparent;
     border: 0.5px solid var(--border2);
     border-radius: var(--radius);
@@ -332,7 +259,6 @@
   }
   .restart-btn:hover { background: var(--bg2); }
 
-  /* Branding footer */
   .footer {
     text-align: center;
     font-size: 11px;
@@ -342,25 +268,32 @@
     border-top: 0.5px solid var(--border);
     letter-spacing: .04em;
   }
+
+  .duo-note {
+    font-size: 13px;
+    color: var(--text2);
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- Screen 0: Start -->
   <div id="s0" class="screen active">
-    <div class="tag">ERFA-Tagung · SWICO Branchenlösung</div>
-    <h1>Eine Person in eurem Umfeld war kürzlich «nicht mehr sie selbst».</h1>
-    <p class="sub">Ihr habt es vielleicht gespürt – aber wann genau habt ihr es <em>wirklich bemerkt</em>?<br><br>90-Sekunden-Reflexion mit eurem Nachbarn.</p>
+    <div class="tag">ERFA-Tagung · SWICO 2026 · Arbeitssicherheit</div>
+    <h1>Psychische Belastung gehört seit 2022 in die Gefährdungsbeurteilung.</h1>
+    <p class="sub">Wie systematisch erfasst ihr das – und was hilft euch dabei?<br><br>90-Sekunden-Reflexion mit eurem Nachbarn.</p>
     <button class="btn-primary" onclick="go(1)">Gemeinsam reflektieren →</button>
     <p class="duo-note">Sucht euch jetzt eine Person neben euch.<br>Ihr beantwortet die Fragen gemeinsam.</p>
     <div class="footer">SWICO · Human Control Room · HRV-Monitoring</div>
   </div>
 
-  <!-- Screen 1: Questions -->
   <div id="s1" class="screen">
     <div class="progress" id="prog"></div>
     <div class="q-card">
+      <div class="law-badge" id="qlabel"></div>
       <div class="q-num" id="qnum"></div>
       <div class="q-txt" id="qtxt"></div>
       <div class="q-ctx" id="qctx"></div>
@@ -372,12 +305,11 @@
     </div>
   </div>
 
-  <!-- Screen 2: Result -->
   <div id="s2" class="screen">
     <div class="tag">Euer gemeinsames Bild</div>
-    <h2 id="res-title"></h2>
+    <h1 style="font-size:22px; margin-bottom:.3rem;" id="res-title"></h1>
     <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
-    <div class="bar-labels"><span>Früh erkannt</span><span>Spät erkannt</span></div>
+    <div class="bar-labels"><span>Systematisch</span><span>Handlungsbedarf</span></div>
     <div class="stat-row" id="stats"></div>
     <div class="insight" id="insight"></div>
     <div class="discuss">
@@ -389,52 +321,55 @@
   </div>
 
 </div>
-
 <script>
 const qs = [
   {
-    txt: "An welchem Punkt habt ihr gemerkt, dass jemand im Team «nicht mehr funktioniert»?",
-    ctx: "Denkt an eine konkrete Situation – aus eurer Rolle als HR, Führungskraft oder Vertrauensperson.",
+    badge: "ArG Art. 6 / VUV · Gesetzliche Pflicht",
+    txt: "Psychische Belastung ist Teil der Gefährdungsbeurteilung. Wie systematisch erfasst ihr das?",
+    ctx: "Denkt an eure aktuelle Praxis – nicht an das, was im Konzept steht.",
     opts: [
-      "Sehr früh – wir haben Veränderungen schnell bemerkt",
-      "Mittel – es brauchte einige Wochen",
-      "Spät – erst als die Leistung klar nachliess",
-      "Sehr spät – erst bei einer Krise oder Ausfall"
+      "Strukturiert, dokumentiert und regelmässig überprüft",
+      "Teilweise erfasst – aber lückenhaft und nicht systematisch",
+      "Hauptsächlich Bauchgefühl und informelle Gespräche",
+      "Noch nicht etabliert – klarer Nachholbedarf"
     ],
     w: [0, 1, 2, 3]
   },
   {
-    txt: "Was war das erste Zeichen, das euch aufgefallen ist?",
-    ctx: "Wählt das, was am ehesten zutrifft – auch wenn mehreres passt.",
+    badge: "Frühwarnung",
+    txt: "Was war das erste Zeichen, das euch bei einer betroffenen Person aufgefallen ist?",
+    ctx: "Denkt an eine konkrete Situation aus eurer Rolle als Sicherheitsbeauftragte/r.",
     opts: [
-      "Verändertes Kommunikationsverhalten (stiller, gereizter)",
-      "Veränderte Fehlerquote oder Arbeitsqualität",
-      "Häufigere Abwesenheiten oder Krankheitstage",
+      "Verändertes Verhalten oder Kommunikation (stiller, gereizter)",
+      "Mehr Fehler, sinkende Sorgfalt bei Schutzvorschriften",
+      "Häufigere Abwesenheiten oder Krankmeldungen",
       "Die Person hat es selbst angesprochen"
     ],
-    w: [0, 1, 2, 1]
+    w: [0, 2, 1, 0]
   },
   {
-    txt: "Wie sicher wart ihr, ob ihr handeln solltet?",
-    ctx: "Das Gefühl zwischen «ich bilde mir das ein» und «ich muss jetzt etwas tun».",
+    badge: "Handlungssicherheit",
+    txt: "Wie sicher wart ihr, ob und wann ihr handeln müsst?",
+    ctx: "Das Spannungsfeld zwischen Fürsorgepflicht und Persönlichkeitsschutz.",
     opts: [
-      "Sehr sicher – klares Bild, klarer Handlungsbedarf",
-      "Eher sicher – mit leichten Zweifeln",
-      "Unsicher – wir haben gezögert",
-      "Sehr unsicher – wir haben gewartet, ob es sich von selbst löst"
+      "Klares Bild – wir haben klare Prozesse und Zuständigkeiten",
+      "Eher sicher – aber mit Unsicherheit über den richtigen Moment",
+      "Unsicher – wir haben gezögert und abgewartet",
+      "Sehr unsicher – fehlende Kriterien, wann Handeln nötig ist"
     ],
     w: [0, 1, 2, 3]
   },
   {
-    txt: "Was hat euch im Erkennen oder Handeln gebremst?",
-    ctx: "Ehrlich antworten – das ist der eigentliche Punkt dieser Frage.",
+    badge: "Systemische Lücke",
+    txt: "Was fehlt euch, um psychische Gefährdungen früher und objektiver zu erkennen?",
+    ctx: "Aus Sicht eurer Rolle als Sicherheitsbeauftragte/r – ehrlich antworten.",
     opts: [
-      "Nichts wesentliches – wir hatten klare Prozesse",
-      "Fehlende Sprache / Begriffe für das, was wir sahen",
-      "Unsicherheit, ob wir «überreagieren»",
-      "Kein objektiver Massstab – alles war Bauchgefühl"
+      "Nichts wesentliches – wir sind gut aufgestellt",
+      "Klare Kriterien und Messinstrumente",
+      "Akzeptanz im Management für das Thema",
+      "Objektive, nicht-subjektive Indikatoren jenseits von Beobachtung"
     ],
-    w: [0, 1, 2, 3]
+    w: [0, 2, 1, 3]
   }
 ];
 
@@ -448,6 +383,7 @@ function buildProg() {
 function showQ() {
   sel = answers[cur] !== undefined ? answers[cur] : null;
   document.getElementById('nxt').disabled = sel === null;
+  document.getElementById('qlabel').textContent = qs[cur].badge;
   document.getElementById('qnum').textContent = `Frage ${cur + 1} von ${qs.length}`;
   document.getElementById('qtxt').textContent = qs[cur].txt;
   document.getElementById('qctx').textContent = qs[cur].ctx;
@@ -491,37 +427,32 @@ function showResult() {
   bar.style.background = colors[lvl];
   setTimeout(() => bar.style.width = pct + '%', 100);
 
-  const titles = [
-    'Gutes Früherkennungs-System',
-    'Ausbaufähige Frühwarnung',
-    'Bauchgefühl ohne Struktur',
-    'Reaktiv statt präventiv'
-  ];
+  const titles = ['Gut aufgestellt – und ausbaufähig', 'Solide Basis, blinde Flecken vorhanden', 'Bauchgefühl dominiert – Struktur fehlt', 'Klarer Handlungsbedarf'];
   document.getElementById('res-title').textContent = titles[lvl];
 
-  const earlySign = ['Verhalten', 'Leistung', 'Abwesenheit', 'Selbstmeldung'][answers[1]];
-  const certainty = ['Sicher', 'Eher sicher', 'Unsicher', 'Sehr unsicher'][answers[2]];
-  const blocker = ['Keine', 'Sprache fehlte', 'Überreaktion-Angst', 'Kein Massstab'][answers[3]];
+  const erfassung = ['Systematisch', 'Teilweise', 'Bauchgefühl', 'Nicht etabliert'][answers[0]];
+  const signal = ['Verhalten', 'Fehlerquote', 'Abwesenheit', 'Selbstmeldung'][answers[1]];
+  const barrier = ['Keine', 'Kriterien fehlen', 'Mgmt-Akzeptanz', 'Objektive Indikatoren'][answers[3]];
 
   document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="n">${earlySign}</div><div class="l">Erstes Signal</div></div>
-    <div class="stat"><div class="n">${certainty}</div><div class="l">Handlungs­sicherheit</div></div>
-    <div class="stat"><div class="n">${blocker}</div><div class="l">Grösste Hürde</div></div>
+    <div class="stat"><div class="n">${erfassung}</div><div class="l">Erfassung psych. Belastung</div></div>
+    <div class="stat"><div class="n">${signal}</div><div class="l">Erstes Warnsignal</div></div>
+    <div class="stat"><div class="n">${barrier}</div><div class="l">Grösste Lücke</div></div>
   `;
 
   const insights = [
-    '<strong>Euer Profil:</strong> Ihr habt Strukturen und ein gutes Gespür. Die Frage ist: Wie macht ihr dieses Wissen im Team <strong>skalierbar</strong> – unabhängig von einzelnen Personen?',
-    '<strong>Euer Profil:</strong> Das Gespür ist da, aber die Erkennung hängt von Aufmerksamkeit ab. Was wäre ein <strong>einfacher, systematischer Anker</strong> – neben dem Bauchgefühl?',
-    '<strong>Euer Profil:</strong> Typisches Muster in ICT-Firmen: Viel läuft über informelle Wahrnehmung. Das ist menschlich – aber auch fragil. <strong>Objektive Indikatoren</strong> würden euch hier entlasten.',
-    '<strong>Euer Profil:</strong> Reaktiv zu sein ist kein Versagen – es zeigt, dass ihr handelt wenn nötig. Aber: Bis zur Krise gehen wertvolle Ressourcen verloren. <strong>Frühwarnung kostet wenig, Burnout kostet viel.</strong>'
+    '<strong>Euer Profil:</strong> Ihr habt Strukturen. Die Frage ist: Wie macht ihr Frühwarnung <strong>unabhängig von Einzelpersonen skalierbar</strong>? HRV könnte ein objektiver Anker sein.',
+    '<strong>Euer Profil:</strong> Ansätze vorhanden, aber Lücken. <strong>Objektive Indikatoren wie HRV</strong> könnten die Lücke zwischen Beobachtung und Dokumentation schliessen.',
+    '<strong>Euer Profil:</strong> Bauchgefühl ist wertvoll – aber vor der Behörde nicht dokumentierbar. <strong>HRV macht das Unsichtbare messbar und nachweisbar.</strong>',
+    '<strong>Euer Profil:</strong> Ihr seid nicht allein. <strong>HRV ist ein Einstieg, der funktioniert – ohne grossen Aufwand.</strong>'
   ];
   document.getElementById('insight').innerHTML = insights[lvl];
 
   const dqs = [
-    'Welche konkreten Strukturen oder Rituale habt ihr eingeführt, die frühe Erkennung ermöglichen? Was könnten andere Firmen davon übernehmen?',
-    'Was wäre in eurer Organisation ein einfacher, realistischer erster Schritt zu mehr Systematik – ohne grossen Aufwand?',
-    'Welche Sprache fehlt euch, um das Thema im Führungsalltag anzusprechen, ohne dass es sofort als «Schwäche» interpretiert wird?',
-    'Was bräuchtet ihr – als HR, als Führungskraft, als Vertrauensperson – damit ihr früher handeln könntet? Was steht dem entgegen?'
+    'Was könntet ihr aus eurer Praxis weitergeben? Welche Instrumente nutzt ihr konkret für psychische Gefährdungsbeurteilung?',
+    'Wo genau sind eure Lücken – und was braucht ihr konkret, um sie zu schliessen?',
+    'Was bräuchtet ihr, damit ihr psychische Belastung so systematisch erfassen könnt wie physische Gefährdungen?',
+    'Wenn ihr morgen einen ersten Schritt machen müsstet: Was wäre realistisch – und was braucht ihr dafür von der GL?'
   ];
   document.getElementById('dq').textContent = dqs[lvl];
 }
